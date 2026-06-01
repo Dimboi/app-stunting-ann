@@ -3,17 +3,14 @@ import pandas as pd
 import numpy as np
 import joblib
 
-# Cache agar loading lebih cepat
 @st.cache_resource
 def load_components():
-    # Load model menggunakan joblib (bukan dari keras/tensorflow lagi)
+    # Cukup load model dan scaler saja (le_jk dan le_status tidak lagi dipakai)
     model = joblib.load('model_stunting_mlp.pkl')
     scaler = joblib.load('scaler.pkl')
-    le_jk = joblib.load('le_jk.pkl')
-    le_status = joblib.load('le_status.pkl')
-    return model, scaler, le_jk, le_status
+    return model, scaler
 
-model, scaler, le_jk, le_status = load_components()
+model, scaler = load_components()
 
 # Desain UI
 st.title("👶 Aplikasi Prediksi Risiko Stunting Balita")
@@ -26,16 +23,31 @@ tinggi_badan = st.sidebar.number_input("Tinggi Badan (cm)", min_value=30.0, max_
 
 # Logika Prediksi
 if st.button("Prediksi Status Gizi"):
-    jk_encoded = le_jk.transform([jenis_kelamin])[0]
+    
+    # 1. MAPPING MANUAL JENIS KELAMIN 
+    # (Sesuai urutan abjad saat kita melatih model: laki-laki=0, perempuan=1)
+    jk_encoded = 0 if jenis_kelamin == 'laki-laki' else 1
+    
+    # 2. Susun dan skalakan input
     input_data = np.array([[umur, jk_encoded, tinggi_badan]])
     input_scaled = scaler.transform(input_data)
     
-    # MLPClassifier di scikit-learn bisa langsung memprediksi kelas
+    # 3. Lakukan prediksi angka kelas
     pred_class = model.predict(input_scaled)[0]
-    hasil_prediksi = le_status.inverse_transform([pred_class])[0]
     
+    # 4. MAPPING MANUAL STATUS GIZI
+    # (Sesuai urutan abjad LabelEncoder di Colab)
+    status_mapping = {
+        0: 'normal',
+        1: 'severely stunted',
+        2: 'stunted',
+        3: 'tinggi'
+    }
+    hasil_prediksi = status_mapping[pred_class]
+    
+    # 5. Tampilkan Hasil
     st.markdown("### Hasil Prediksi:")
-    if hasil_prediksi == 'normal' or hasil_prediksi == 'tinggi':
+    if hasil_prediksi in ['normal', 'tinggi']:
         st.success(f"Status Gizi: **{hasil_prediksi.upper()}** ✅")
     else:
         st.error(f"Status Gizi: **{hasil_prediksi.upper()}** ⚠️")
