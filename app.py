@@ -52,4 +52,4 @@ if st.button("Prediksi Status Gizi"):
     else:
         st.error(f"Status Gizi: **{hasil_prediksi.upper()}** ⚠️")
     
-    st.write("*(Catatan: Ini adalah prediksi AI, pastikan untuk tetap berkonsultasi dengan dokter anak atau posyandu terdekat)*")
+    st.write("*(Catatan: Hina aja ibu ibunya*")
