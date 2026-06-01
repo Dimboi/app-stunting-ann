@@ -49,7 +49,7 @@ if st.button("Prediksi Status Gizi"):
     st.markdown("### Hasil Prediksi:")
     if hasil_prediksi in ['normal', 'tinggi']:
         st.success(f"Status Gizi: **{hasil_prediksi.upper()}** ✅")
-        st.write("*(Keluarga Cemara")
+        st.write("Keluarga Cemara")
     else:
         st.error(f"Status Gizi: **{hasil_prediksi.upper()}** ⚠️")
-        st.write("*(Hina aja ibu ibunya*")
+        st.write("Hina aja ibu ibunya")
