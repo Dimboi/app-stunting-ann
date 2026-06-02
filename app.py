@@ -14,7 +14,7 @@ model, scaler = load_components()
 
 # Desain UI
 st.title("👶Aplikasi Prediksi Risiko Stunting Balita👶")
-st.write("biasa lah ygy... ibu low iq")
+st.write("Silahkan dicoba IBUK IBUK")
 
 st.sidebar.header("Masukkan Data Balita")
 umur = st.sidebar.number_input("Umur (Bulan)", min_value=0, max_value=60, value=12)
