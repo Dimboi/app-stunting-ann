@@ -52,4 +52,4 @@ if st.button("Prediksi Status Gizi"):
         st.write("Keluarga Cemara")
     else:
         st.error(f"Status Gizi: **{hasil_prediksi.upper()}** ⚠️")
-        st.write("Hina aja ibu ibunya")
+        st.write("Mohon lebih diperhatikan gizi anaknya")
